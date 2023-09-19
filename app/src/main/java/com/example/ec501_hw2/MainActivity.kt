@@ -73,13 +73,21 @@ class MainActivity : AppCompatActivity() {
                 }
 
                 if (!isFraction){
-                    temp=temp*10+num
+                    if(temp < 0){
+                        temp=temp*10-num
+                    }else{
+                        temp=temp*10+num
+                    }
                     nums.add(temp)
                     text_ans.setText(temp.toInt().toString())
                 }
                 else {
                     FractionLocation+=1
-                    temp=temp+num*Math.pow(0.1, FractionLocation.toDouble())
+                    if(temp < 0){
+                        temp=temp-num*Math.pow(0.1, FractionLocation.toDouble())
+                    }else{
+                        temp=temp+num*Math.pow(0.1, FractionLocation.toDouble())
+                    }
                     nums.add(temp)
                     text_ans.setText(temp.toString())
                 }
@@ -442,6 +450,8 @@ class MainActivity : AppCompatActivity() {
         })
     }
 }
+
+
 fun countDecimalPlaces(input: String): Int {
     val decimalIndex = input.indexOf('.')
     if (decimalIndex == -1 || decimalIndex == input.length - 1) {
