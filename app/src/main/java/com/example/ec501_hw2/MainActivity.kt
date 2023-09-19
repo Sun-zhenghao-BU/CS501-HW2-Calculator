@@ -19,7 +19,9 @@ import android.widget.EditText
 import android.widget.Spinner
 import android.widget.TextView
 import android.widget.Toast
+import java.lang.Math.round
 import java.lang.Math.sqrt
+import kotlin.math.pow
 
 class MainActivity : AppCompatActivity() {
 
@@ -73,21 +75,22 @@ class MainActivity : AppCompatActivity() {
                 }
 
                 if (!isFraction){
-                    if(temp < 0){
-                        temp=temp*10-num
-                    }else{
-                        temp=temp*10+num
+                    if (temp<0) {
+                        temp = temp * 10 - num
+                    } else {
+                        temp = temp * 10 + num
                     }
                     nums.add(temp)
                     text_ans.setText(temp.toInt().toString())
                 }
                 else {
                     FractionLocation+=1
-                    if(temp < 0){
-                        temp=temp-num*Math.pow(0.1, FractionLocation.toDouble())
-                    }else{
-                        temp=temp+num*Math.pow(0.1, FractionLocation.toDouble())
+                    if (temp<0) {
+                        temp = temp - num * Math.pow(0.1, FractionLocation.toDouble())
+                    } else {
+                        temp = temp + num * Math.pow(0.1, FractionLocation.toDouble())
                     }
+                    val temp = roundToNDecimalPlaces(temp,FractionLocation)
                     nums.add(temp)
                     text_ans.setText(temp.toString())
                 }
@@ -181,14 +184,16 @@ class MainActivity : AppCompatActivity() {
                         if(nums[0]==nums[0].toInt().toDouble()){
                             text_ans.setText(nums[0].toInt().toString())
                         }else{
-                            text_ans.setText(nums[0].toString())
+                            val temp = roundToNDecimalPlaces(nums[0],FractionLocation)
+                            text_ans.setText(temp.toString())
+//                            text_ans.setText(nums[0].toString())
                             isFraction=true
                             FractionLocation=countDecimalPlaces(nums[0].toString())
                         }
                     } else if (operatingDiv){
                         operatingDiv=false
                         if(nums[nums.size - 1]==0.0){
-                            text_ans.setText("error")
+                            text_ans.setText("0")
                             lastIsNum = true
                             nums=mutableListOf<Double>()
                             lastOperator=""
@@ -209,7 +214,9 @@ class MainActivity : AppCompatActivity() {
                             if (nums[0] == nums[0].toInt().toDouble()) {
                                 text_ans.setText(nums[0].toInt().toString())
                             } else {
-                                text_ans.setText(nums[0].toString())
+                                val temp = roundToNDecimalPlaces(nums[0],FractionLocation)
+                                text_ans.setText(temp.toString())
+//                                text_ans.setText(nums[0].toString())
                                 isFraction=true
                                 FractionLocation=countDecimalPlaces(nums[0].toString())
                             }
@@ -221,7 +228,9 @@ class MainActivity : AppCompatActivity() {
                                 nums[0] = text_ans.text.toString().toDouble()
                                 nums.removeAt(nums.size - 1)
                             } else {
-                                text_ans.setText((nums[0] + nums[1]).toString())
+                                val temp = roundToNDecimalPlaces((nums[0] + nums[1]),FractionLocation)
+                                text_ans.setText(temp.toString())
+//                                text_ans.setText((nums[0] + nums[1]).toString())
                                 nums[0] = text_ans.text.toString().toDouble()
                                 nums.removeAt(nums.size - 1)
                                 isFraction=true
@@ -245,7 +254,8 @@ class MainActivity : AppCompatActivity() {
                         if (nums[0] + nums[1] == (nums[0] + nums[1]).toInt().toDouble()) {
                             text_ans.setText((nums[0] + nums[1]).toInt().toString())
                         } else {
-                            text_ans.setText((nums[0] + nums[1]).toString())
+                            val temp = roundToNDecimalPlaces((nums[0] + nums[1]),FractionLocation)
+                            text_ans.setText(temp.toString())
                         }
                     }
                 }
@@ -264,7 +274,8 @@ class MainActivity : AppCompatActivity() {
                         if (nums[0] + nums[1] == (nums[0] + nums[1]).toInt().toDouble()) {
                             text_ans.setText((nums[0] + nums[1]).toInt().toString())
                         } else {
-                            text_ans.setText((nums[0] + nums[1]).toString())
+                            val temp = roundToNDecimalPlaces((nums[0] + nums[1]),FractionLocation)
+                            text_ans.setText(temp.toString())
                         }
                     }
                 }
@@ -299,10 +310,10 @@ class MainActivity : AppCompatActivity() {
                     temp = nums.removeAt(nums.size - 1)
                 }
                 temp= sqrt(temp.toDouble())
+                roundToNDecimalPlaces(temp,FractionLocation)
                 nums.add(temp)
                 text_ans.setText(temp.toString())
-                Toast.makeText(this@MainActivity, "sqrt", Toast.LENGTH_SHORT).show()
-
+//                Toast.makeText(this@MainActivity, "sqrt", Toast.LENGTH_SHORT).show()
             }
         } as View.OnClickListener)
 
@@ -312,7 +323,7 @@ class MainActivity : AppCompatActivity() {
                 if(divZero) divide_zero()
                 else {
                     num_fun(1)
-                    Toast.makeText(this@MainActivity, "1", Toast.LENGTH_SHORT).show()
+//                    Toast.makeText(this@MainActivity, "1", Toast.LENGTH_SHORT).show()
                     lastIsNum = true
                 }
             }
@@ -323,7 +334,7 @@ class MainActivity : AppCompatActivity() {
                 if(divZero) divide_zero()
                 else {
                     num_fun(2)
-                    Toast.makeText(this@MainActivity, "2", Toast.LENGTH_SHORT).show()
+//                    Toast.makeText(this@MainActivity, "2", Toast.LENGTH_SHORT).show()
                     lastIsNum = true
                 }
             }
@@ -334,7 +345,7 @@ class MainActivity : AppCompatActivity() {
                 if(divZero) divide_zero()
                 else {
                     num_fun(3)
-                    Toast.makeText(this@MainActivity, "3", Toast.LENGTH_SHORT).show()
+//                    Toast.makeText(this@MainActivity, "3", Toast.LENGTH_SHORT).show()
                     lastIsNum = true
                 }
             }
@@ -345,7 +356,7 @@ class MainActivity : AppCompatActivity() {
                 if(divZero) divide_zero()
                 else {
                     num_fun(4)
-                    Toast.makeText(this@MainActivity, "4", Toast.LENGTH_SHORT).show()
+//                    Toast.makeText(this@MainActivity, "4", Toast.LENGTH_SHORT).show()
                     lastIsNum = true
                 }
             }
@@ -356,7 +367,7 @@ class MainActivity : AppCompatActivity() {
                 if(divZero) divide_zero()
                 else {
                     num_fun(5)
-                    Toast.makeText(this@MainActivity, "5", Toast.LENGTH_SHORT).show()
+//                    Toast.makeText(this@MainActivity, "5", Toast.LENGTH_SHORT).show()
                     lastIsNum = true
                 }
             }
@@ -367,7 +378,7 @@ class MainActivity : AppCompatActivity() {
                 if(divZero) divide_zero()
                 else {
                     num_fun(6)
-                    Toast.makeText(this@MainActivity, "6", Toast.LENGTH_SHORT).show()
+//                    Toast.makeText(this@MainActivity, "6", Toast.LENGTH_SHORT).show()
                     lastIsNum = true
                 }
             }
@@ -378,7 +389,7 @@ class MainActivity : AppCompatActivity() {
                 if(divZero) divide_zero()
                 else {
                     num_fun(7)
-                    Toast.makeText(this@MainActivity, "7", Toast.LENGTH_SHORT).show()
+//                    Toast.makeText(this@MainActivity, "7", Toast.LENGTH_SHORT).show()
                     lastIsNum = true
                 }
             }
@@ -389,7 +400,7 @@ class MainActivity : AppCompatActivity() {
                 if(divZero) divide_zero()
                 else {
                     num_fun(8)
-                    Toast.makeText(this@MainActivity, "8", Toast.LENGTH_SHORT).show()
+//                    Toast.makeText(this@MainActivity, "8", Toast.LENGTH_SHORT).show()
                     lastIsNum = true
                 }
             }
@@ -400,7 +411,7 @@ class MainActivity : AppCompatActivity() {
                 if(divZero) divide_zero()
                 else {
                     num_fun(9)
-                    Toast.makeText(this@MainActivity, "9", Toast.LENGTH_SHORT).show()
+//                    Toast.makeText(this@MainActivity, "9", Toast.LENGTH_SHORT).show()
                     lastIsNum = true
                 }
             }
@@ -411,7 +422,7 @@ class MainActivity : AppCompatActivity() {
                 if(divZero) divide_zero()
                 else {
                     num_fun(0)
-                    Toast.makeText(this@MainActivity, "0", Toast.LENGTH_SHORT).show()
+//                    Toast.makeText(this@MainActivity, "0", Toast.LENGTH_SHORT).show()
                     lastIsNum = true
                 }
             }
@@ -433,12 +444,15 @@ class MainActivity : AppCompatActivity() {
                 if(nums.isNotEmpty()) temp = nums.removeAt(nums.size - 1)
                 if (invalidChars.isEmpty() && text_ans.text.toString()!="") {
                     temp = text_ans.text.toString().toDouble()
+
+                    roundToNDecimalPlaces(temp,FractionLocation)
+//                    text_ans.setText(temp.toString())
                 }
                 nums.add(temp)
                 if (invalidChars.isNotEmpty()){
                     lastIsNum = true
                     nums=mutableListOf<Double>()
-                    text_ans.setText("error")
+                    text_ans.setText("0")
                     isFraction = false
                     FractionLocation = 0
                     lastOperator=""
@@ -450,8 +464,6 @@ class MainActivity : AppCompatActivity() {
         })
     }
 }
-
-
 fun countDecimalPlaces(input: String): Int {
     val decimalIndex = input.indexOf('.')
     if (decimalIndex == -1 || decimalIndex == input.length - 1) {
@@ -460,4 +472,8 @@ fun countDecimalPlaces(input: String): Int {
     val decimalPart = input.substring(decimalIndex + 1)
     val trimmedDecimalPart = decimalPart.replace("0*$".toRegex(), "")
     return trimmedDecimalPart.length
+}
+fun roundToNDecimalPlaces(value: Double, n: Int): Double {
+    val factor = 10.0.pow(n.toDouble()+1)
+    return round(value * factor) / factor
 }
