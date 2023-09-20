@@ -60,7 +60,7 @@ class MainActivity : AppCompatActivity() {
         var FractionLocation = 0
         var lastOperator = ""
         var divZero = false
-
+        var minus_zero = false
         fun ifOutputFraction():Boolean{
             if(nums.size==2) return !(nums[0]==nums[0].toInt().toDouble() && nums[1]==nums[1].toInt().toDouble())
             return if(nums.size==1) nums[0] != nums[0].toInt().toDouble()
@@ -73,8 +73,8 @@ class MainActivity : AppCompatActivity() {
                 if (!nums.isEmpty()) {
                     temp = nums.removeAt(nums.size - 1)
                 }
-
                 if (!isFraction){
+                    minus_zero=false
                     if (temp<0) {
                         temp = temp * 10 - num
                     } else {
@@ -85,7 +85,8 @@ class MainActivity : AppCompatActivity() {
                 }
                 else {
                     FractionLocation+=1
-                    if (temp<0) {
+                    if (temp<0 || (minus_zero && temp==0.0)) {
+                        if (num!=0) minus_zero=false
                         temp = temp - num * Math.pow(0.1, FractionLocation.toDouble())
                     } else {
                         temp = temp + num * Math.pow(0.1, FractionLocation.toDouble())
@@ -107,6 +108,7 @@ class MainActivity : AppCompatActivity() {
                         }
                     }
                     "minus" -> {
+                        if(num==0) minus_zero=true
                         if(nums.size==2){
                             nums[0]=text_ans.text.toString().toDouble()
                             nums[1]=(-num).toDouble()
@@ -145,6 +147,8 @@ class MainActivity : AppCompatActivity() {
             override fun onClick(v: View?) {
                 if(divZero) divide_zero()
                 else if(!nums.isEmpty()){
+                    isFraction = false
+                    FractionLocation = 0
                     lastIsNum=false
                     lastOperator="mul"
                 }
@@ -155,6 +159,8 @@ class MainActivity : AppCompatActivity() {
             override fun onClick(v: View?) {
                 if(divZero) divide_zero()
                 else if(!nums.isEmpty()){
+                    isFraction = false
+                    FractionLocation = 0
                     lastIsNum=false
                     lastOperator="div"
                 }
@@ -184,9 +190,9 @@ class MainActivity : AppCompatActivity() {
                         if(nums[0]==nums[0].toInt().toDouble()){
                             text_ans.setText(nums[0].toInt().toString())
                         }else{
-                            val temp = roundToNDecimalPlaces(nums[0],FractionLocation)
-                            text_ans.setText(temp.toString())
-//                            text_ans.setText(nums[0].toString())
+//                            val temp = roundToNDecimalPlaces(nums[0],FractionLocation)
+//                            text_ans.setText(temp.toString())
+                            text_ans.setText(nums[0].toString())
                             isFraction=true
                             FractionLocation=countDecimalPlaces(nums[0].toString())
                         }
@@ -214,9 +220,9 @@ class MainActivity : AppCompatActivity() {
                             if (nums[0] == nums[0].toInt().toDouble()) {
                                 text_ans.setText(nums[0].toInt().toString())
                             } else {
-                                val temp = roundToNDecimalPlaces(nums[0],FractionLocation)
-                                text_ans.setText(temp.toString())
-//                                text_ans.setText(nums[0].toString())
+//                                val temp = roundToNDecimalPlaces(nums[0],FractionLocation)
+//                                text_ans.setText(temp.toString())
+                                text_ans.setText(nums[0].toString())
                                 isFraction=true
                                 FractionLocation=countDecimalPlaces(nums[0].toString())
                             }
@@ -228,9 +234,9 @@ class MainActivity : AppCompatActivity() {
                                 nums[0] = text_ans.text.toString().toDouble()
                                 nums.removeAt(nums.size - 1)
                             } else {
-                                val temp = roundToNDecimalPlaces((nums[0] + nums[1]),FractionLocation)
-                                text_ans.setText(temp.toString())
-//                                text_ans.setText((nums[0] + nums[1]).toString())
+//                                val temp = roundToNDecimalPlaces((nums[0] + nums[1]),FractionLocation)
+//                                text_ans.setText(temp.toString())
+                                text_ans.setText((nums[0] + nums[1]).toString())
                                 nums[0] = text_ans.text.toString().toDouble()
                                 nums.removeAt(nums.size - 1)
                                 isFraction=true
@@ -239,6 +245,14 @@ class MainActivity : AppCompatActivity() {
                         }
                     }
                 }
+                lastIsNum = true
+                nums=mutableListOf<Double>()
+                isFraction = false
+                FractionLocation = 0
+                lastOperator=""
+                divZero=false
+                operatingMul=false
+                minus_zero = false
             }
         } as View.OnClickListener)
 
@@ -254,8 +268,9 @@ class MainActivity : AppCompatActivity() {
                         if (nums[0] + nums[1] == (nums[0] + nums[1]).toInt().toDouble()) {
                             text_ans.setText((nums[0] + nums[1]).toInt().toString())
                         } else {
-                            val temp = roundToNDecimalPlaces((nums[0] + nums[1]),FractionLocation)
-                            text_ans.setText(temp.toString())
+//                            val temp = roundToNDecimalPlaces((nums[0] + nums[1]),FractionLocation)
+//                            text_ans.setText(temp.toString())
+                            text_ans.setText((nums[0] + nums[1]).toString())
                         }
                     }
                 }
@@ -274,8 +289,9 @@ class MainActivity : AppCompatActivity() {
                         if (nums[0] + nums[1] == (nums[0] + nums[1]).toInt().toDouble()) {
                             text_ans.setText((nums[0] + nums[1]).toInt().toString())
                         } else {
-                            val temp = roundToNDecimalPlaces((nums[0] + nums[1]),FractionLocation)
-                            text_ans.setText(temp.toString())
+//                            val temp = roundToNDecimalPlaces((nums[0] + nums[1]),FractionLocation)
+//                            text_ans.setText(temp.toString())
+                            text_ans.setText((nums[0] + nums[1]).toString())
                         }
                     }
                 }
@@ -299,6 +315,7 @@ class MainActivity : AppCompatActivity() {
                 lastOperator=""
                 divZero=false
                 operatingMul=false
+                minus_zero = false
             }
         } as View.OnClickListener)
 
@@ -310,7 +327,7 @@ class MainActivity : AppCompatActivity() {
                     temp = nums.removeAt(nums.size - 1)
                 }
                 temp= sqrt(temp.toDouble())
-                roundToNDecimalPlaces(temp,FractionLocation)
+//                roundToNDecimalPlaces(temp,FractionLocation)
                 nums.add(temp)
                 text_ans.setText(temp.toString())
 //                Toast.makeText(this@MainActivity, "sqrt", Toast.LENGTH_SHORT).show()
@@ -445,7 +462,7 @@ class MainActivity : AppCompatActivity() {
                 if (invalidChars.isEmpty() && text_ans.text.toString()!="") {
                     temp = text_ans.text.toString().toDouble()
 
-                    roundToNDecimalPlaces(temp,FractionLocation)
+//                    roundToNDecimalPlaces(temp,FractionLocation)
 //                    text_ans.setText(temp.toString())
                 }
                 nums.add(temp)
